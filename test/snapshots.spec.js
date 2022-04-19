@@ -3,6 +3,7 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import Datetime from '../src/DateTime';
 import renderer from 'react-test-renderer';
+import utils from './testUtils';
 
 // findDOMNode is not supported by the react-test-renderer,
 // and even though this component is not using that method
@@ -205,6 +206,13 @@ it('renderYear: specified', () => {
 	const renderYear = (props, currentDate) => <td {...props}>{ '0' + currentDate.date() }</td>;
 	const tree = renderer.create(
 		<Datetime renderYear={renderYear} />
+	).toJSON();
+	expect(tree).toMatchSnapshot();
+});
+
+it('displayWeekNumbers: specified', () => {
+	const tree = renderer.create(
+		<Datetime displayWeekNumbers />
 	).toJSON();
 	expect(tree).toMatchSnapshot();
 });

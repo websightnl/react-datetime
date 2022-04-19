@@ -33,7 +33,7 @@ export default class DaysView extends React.Component {
 				onClickSwitch={ () => this.props.showView( 'months' ) }
 				onClickNext={ () => this.props.navigate( 1, 'months' ) }
 				switchContent={ locale.months( date ) + ' ' + date.year() }
-				switchColSpan={5}
+				switchColSpan={this.props.displayWeekNumbers ? 6 : 5}
 				switchProps={ { 'data-value': this.props.viewDate.month() } }
 			/>
 		);
@@ -41,12 +41,17 @@ export default class DaysView extends React.Component {
 
 	renderDayHeaders() {
 		const locale = this.props.viewDate.localeData();
+
 		let dayItems = getDaysOfWeek( locale ).map( (day, index) => (
 			<th key={ day + index } className="dow">{ day }</th>
 		));
 
+		if (this.props.displayWeekNumbers) {
+			dayItems.unshift(<th key="weeknumber" className="rdtWeekNumber">#</th>);
+		}
+
 		return (
-			<tr>
+			<tr className={this.props.displayWeekNumbers ? 'hasWeekNumbers' : undefined}>
 				{ dayItems }
 			</tr>
 		);
@@ -69,6 +74,10 @@ export default class DaysView extends React.Component {
 
 		while ( startDate.isBefore( endDate ) ) {
 			let row = getRow( rows, i++ );
+			// Render week number for each first item in a row
+			if (this.props.displayWeekNumbers && ((i - 1) % 7) === 0) {
+				row.push( this.renderWeekNumber( startDate, startOfMonth, endOfMonth ) );
+			}
 			row.push( this.renderDay( startDate, startOfMonth, endOfMonth ) );
 			startDate.add( 1, 'd' );
 		}
@@ -76,6 +85,12 @@ export default class DaysView extends React.Component {
 		return rows.map( (r, i) => (
 			<tr key={ `${endDate.month()}_${i}` }>{ r }</tr>
 		));
+	}
+
+	renderWeekNumber( date ) {
+		return (
+			<td className="rdtWeekNumber" key={date.week()}>{date.week()}</td>
+		);
 	}
 
 	renderDay( date, startOfMonth, endOfMonth ) {

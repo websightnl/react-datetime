@@ -40,6 +40,12 @@
 .rdtPicker td {
   cursor: pointer;
 }
+.rdtPicker td.rdtWeekNumber {
+  font-size: x-small;
+  color: #999999;
+  cursor: default;
+}
+
 .rdtPicker td.rdtDay:hover,
 .rdtPicker td.rdtHour:hover,
 .rdtPicker td.rdtMinute:hover,
@@ -98,6 +104,13 @@
   border-bottom: none;
   cursor: default;
 }
+.rdtPicker tr.hasWeekNumbers .dow {
+  width: 13%;
+}
+.rdtPicker th.rdtWeekNumber {
+  width: 9%;
+}
+
 .rdtPicker th.rdtSwitch {
   width: 100px;
 }
